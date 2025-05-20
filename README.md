@@ -44,3 +44,32 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 1.npx shadcn@latest init
 2.npx shadcn@latest add button
 3.npx shadcn@latest add avatar badge calendar dialog input popover radio-group select slider sonner tabs textarea
+
+# logos 
+make logos
+
+# fonts 
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
+
+# make header.jsx in components folder 
+
+# convex for databases
+npm install convex
+npx convex dev
+
+make a convex-client-provider in components
+wrap the layout in ConvexClientProvider
+
+# for authentication
+
+npm install @clerk/nextjs
+
+The clerkMiddleware helper enables authentication and is where you'll configure your protected routes.
+
+it run before the application and if user is not signed in then i will nogt allow to go to the protected routes
+
+wrap the body layout in ClerkProvider.
+
