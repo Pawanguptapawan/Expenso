@@ -73,3 +73,46 @@ it run before the application and if user is not signed in then i will nogt allo
 
 wrap the body layout in ClerkProvider.
 
+
+in components/header.jsx
+<SignedOut>
+      <SignInButton />
+      <SignUpButton />
+    </SignedOut>
+    <SignedIn>
+      <UserButton />
+    </SignedIn>
+
+
+
+after it we created auth folder for default routing
+sign-in/[[...sign-in]]/page.jsx
+
+sign-up/[[...sign-up]]//page.jsx
+
+create a file into auth/layout.jsx  for authentication
+
+
+in layout.jsx i just modify the page and add a backgroud image.
+
+
+with the authentication we want to create a schema for user database.
+
+so we crrate a file in convex folder/schema.jsx
+
+after creating this schema , we create afile convex/auth.config.js for setting the issuer URL 
+issuer URL in .env NEXT_CLERK_FRONTEND_ALI_URL
+
+create a file into convex/users.js
+Mutation for storing current user
+
+
+create a folder for hooks
+hooks/user-store-user.js
+Calling the store user mutation from React
+You can call this mutation when the user logs in from a useEffect hook. After the mutation succeeds you can update local state to reflect that the user has been stored.
+use into components/headers
+
+
+npm i next-spinners --legacy-peer-daps
+
