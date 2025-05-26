@@ -120,3 +120,223 @@
     @apply bg-background text-foreground;
   }
 }
+
+.gradient-hover {
+  background-size: 200% 200%;
+  background-position: left center;
+  transition: background-position 0.5s ease;
+}
+
+.gradient-hover:hover {
+  background-position: right center;
+}
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-gradient {
+  background: linear-gradient(
+    270deg,
+    #34d399,
+    #059669,
+    #10b981,
+    #34d399
+  );
+  background-size: 800% 800%;
+  animation: gradientShift 8s ease infinite;
+  color: white;
+  border-radius: 0.25rem; /* same as rounded */
+  padding: 0.25rem 0.75rem; /* same as px-3 py-1 */
+  font-weight: 500; /* medium */
+  font-size: 0.875rem; /* text-sm */
+  transition: box-shadow 0.3s ease;
+}
+
+.animated-gradient:hover {
+  box-shadow: 0 0 10px #059669cc;
+}
+@keyframes gradientShiftDashboard {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-gradient-dashboard {
+  background: linear-gradient(
+    270deg,
+    #6366f1, /* indigo-500 */
+    #8b5cf6, /* purple-500 */
+    #a78bfa, /* violet-400 */
+    #6366f1
+  );
+  background-size: 800% 800%;
+  animation: gradientShiftDashboard 8s ease infinite;
+  color: white;
+  border-radius: 0.375rem; /* md inline-flex btn default rounding */
+  padding: 0.375rem 0.75rem; /* approx for btn */
+  font-weight: 500;
+  font-size: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: box-shadow 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  border: 1px solid transparent;
+}
+/* 
+.animated-gradient-dashboard:hover {
+  box-shadow: 0 0 12px #8b5cf6cc;
+  color: #a78bfa;
+  border-color: #8b5cf6;
+}
+@keyframes gradientShiftXY {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+} */
+
+.animate-gradient-xy {
+  background: linear-gradient(270deg, #ec4899, #8b5cf6, #6366f1, #ec4899);
+  background-size: 600% 600%;
+  animation: gradientShiftXY 6s ease infinite;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(270deg, #ec4899, #8b5cf6, #6366f1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+
+.gradient-border-animated {
+  position: relative;
+  overflow: hidden; /* To clip the gradient if it extends beyond the border */
+  border-radius: 9999px; /* rounded-full */
+  padding: 4px; /* Simulates the border width */
+}
+
+.gradient-border-animated::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to right, #60A5FA, #A78BFA, #EC4899); /* Your gradient colors */
+  background-size: 300% 300%;
+  animation: gradientShiftXY 2s ease infinite;
+  border-radius: 9999px; /* Match parent's rounded-full */
+  z-index: -1; /* Place behind the actual content */
+}
+
+/* Your existing keyframes */
+@keyframes gradientShiftXY {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
+@utility gradient{
+  @apply bg-gradient-to-r from-green-500 to-teal-500;
+
+}
+
+@utility gradient-title {
+  @apply gradient font-extrabold tracking-tighter text-transparent bg-clip-text pb-2 pr-2;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .animated-gradient {
+    @apply bg-gradient-to-r from-green-400 via-blue-700 to-purple-700 bg-[length:200%_200%] transition-all duration-500;
+    animation: gradient-move 1s ease infinite;
+  }
+}
+
+@keyframes gradient-move {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .animated-gradient-outline::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(270deg, #22c55e, #3b82f6, #8b5cf6);
+    background-size: 600% 600%;
+    animation: gradient-flow 6s ease infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .animated-gradient-outline:hover::before {
+    opacity: 1;
+  }
+
+  .animated-gradient-outline {
+    position: relative;
+    border: 2px solid #22c55e;
+  }
+
+  .animated-gradient-outline:hover {
+    color: white !important;
+  }
+
+  .animated-gradient-outline:hover a {
+    color: white !important;
+  }
+}
+
+@keyframes gradient-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

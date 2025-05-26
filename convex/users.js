@@ -1,6 +1,6 @@
-import { mutation } from "./_generated/server";
-//mutation means updation manipulation,or creation of the database.
-//copy from convex
+import { v } from "convex/values";
+import { mutation, query } from "./_generated/server";
+import { internal } from "./_generated/api";
 
 export const store = mutation({
   args: {},
@@ -18,7 +18,7 @@ export const store = mutation({
     const user = await ctx.db
       .query("users")
       .withIndex("by_token", (q) =>
-        q.eq("tokenIdentifier", identity.tokenIdentifier),
+        q.eq("tokenIdentifier", identity.tokenIdentifier)
       )
       .unique();
     if (user !== null) {
