@@ -110,6 +110,7 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  --shadow: 0 4px 16px oklch(0.145 0 0 / 0.4);
 }
 
 @layer base {
@@ -157,11 +158,12 @@
   padding: 0.25rem 0.75rem; /* same as px-3 py-1 */
   font-weight: 500; /* medium */
   font-size: 0.875rem; /* text-sm */
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.1s ease;
+  
 }
 
 .animated-gradient:hover {
-  box-shadow: 0 0 10px #059669cc;
+  box-shadow: 0 0 10px rgb(1, 75, 1);
 }
 @keyframes gradientShiftDashboard {
   0% {
@@ -276,9 +278,7 @@
   @apply gradient font-extrabold tracking-tighter text-transparent bg-clip-text pb-2 pr-2;
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
 
 @layer utilities {
   .animated-gradient {
@@ -294,9 +294,7 @@
 }
 
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
 
 @layer utilities {
   .animated-gradient-outline::before {
@@ -338,5 +336,16 @@
   }
   100% {
     background-position: 0% 50%;
+  }
+}
+
+
+/* @tailwind base;
+@tailwind components; */
+@tailwind utilities;
+
+@layer utilities {
+  .spin-slow {
+    animation: spin 3s linear infinite;
   }
 }

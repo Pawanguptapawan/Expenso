@@ -1,3 +1,7 @@
+// This file creates a reusable provider component that must wrap your application (usually in layout.js, page.tsx, or app.tsx) so that Convex and Clerk features (like useMutation, useQuery, or useAuth) work properly in the rest of the app.
+
+
+
 "use client";
 
 import { useAuth } from "@clerk/nextjs";
@@ -12,3 +16,4 @@ export function ConvexClientProvider({ children }) {
   useAuth={useAuth}
   >{children}</ConvexProviderWithClerk >;
 }
+

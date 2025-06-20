@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 import { LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import { SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
-import { useStoreUser } from "@/hooks/use-store-user";
+import { useStoreUser } from "../hooks/use-store-user";
 import { BarLoader } from "react-spinners";
 import { Authenticated, Unauthenticated } from "convex/react";
 import Image from "next/image";
@@ -19,8 +19,8 @@ export default function Header() {
     setMounted(true);
   }, []);
   return (
-    <header className="fixed top-0 w-full border-b bg-white/95 backdrop-blur z-50 supports-[backdrop-filter]:bg-white/60">
-      <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
+    <header className="fixed top-0 w-full border-b bg-white/95 backdrop-blur-sm z-50 supports-[backdrop-filter]:bg-white/60">
+      <nav className="container mx-auto px-4 h-16 flex items-center justify-between bg-amber-50">
         <Link href="/" className="flex items-center gap-2">
           <Image
             src={"/logos/logo2.png"}
@@ -35,14 +35,14 @@ export default function Header() {
           <div className="hidden md:flex items-center gap-6">
             <Link
               href="#features"
-              className="animated-gradient"
+              className="animated-gradient text-white px-6 py-3 rounded-md shadow-stone-900 shadow-xl"
 
             >
               Features
             </Link>
             <Link
               href="#how-it-works"
-              className="animated-gradient"
+              className="animated-gradient text-white px-6 py-3 rounded-md shadow-stone-900 shadow-xl"
             >
               How It Works
             </Link>
@@ -59,7 +59,7 @@ export default function Header() {
                 <LayoutDashboard className="h-4 w-4" />
                 Dashboard
               </Button>
-              
+
             </Link>
             {/* <Link href="/dashboard">
   <Button
@@ -78,22 +78,22 @@ export default function Header() {
             <UserButton
   appearance={{
     elements: {
-      avatarBox: 
+      avatarBox:
         "w-20 h-20 rounded-full overflow-hidden " +
         "bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient-xy " +
         "shadow-2xl transition-transform duration-500 hover:scale-105 flex items-center justify-center", // Added flex for centering
 
       // This is the key: make the avatar image slightly smaller and with a solid background
-      userButtonAvatarImage: 
+      userButtonAvatarImage:
         "w-[calc(100%-8px)] h-[calc(100%-8px)] rounded-full object-cover bg-white", // 8px for 4px border on each side
-      
-      userButtonPopoverCard: 
-        "shadow-3xl rounded-lg border border-gray-200 bg-white p-6 animate-fadeIn",
-      userPreviewMainIdentifier: 
+
+      userButtonPopoverCard:
+        "shadow-3xl rounded-lg  bg-white p-6 animate-fadeIn",
+      userPreviewMainIdentifier:
         "font-semibold text-purple-700 text-xl tracking-wide",
     },
   }}
-  afterSignOutUrl="/"
+  afterSignOutUrl={"/"}
 />
           </Authenticated>
 
