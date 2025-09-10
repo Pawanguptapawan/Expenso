@@ -277,7 +277,7 @@ export default function ExpenseList({
 
           return (
               <Card
-                  className="hover:bg-muted/30 transition-colors"
+                  className=" transition-colors"
                   key={expense._id}
               >
                 <CardContent className="py-4">

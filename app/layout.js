@@ -32,7 +32,7 @@ export default function RootLayout({ children }) {
             {/*Connects the app to the Convex backend, also giving components access to Convex + Clerk.*/}
           <ConvexClientProvider>
             <Header />
-            <main className="min-h-screen">
+            <main className="min-h-screen bg-gray-600">
               <Toaster richColors />
 
               {children}

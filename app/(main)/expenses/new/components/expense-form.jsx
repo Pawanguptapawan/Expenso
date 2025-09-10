@@ -308,9 +308,9 @@ export function ExpenseForm({ type = "individual", onSuccess }) {
                         onValueChange={(value) => setValue("splitType", value)}
                     >
                         <TabsList className="grid w-full grid-cols-3">
-                            <TabsTrigger value="equal">Equal</TabsTrigger>
-                            <TabsTrigger value="percentage">Percentage</TabsTrigger>
-                            <TabsTrigger value="exact">Exact Amounts</TabsTrigger>
+                            <TabsTrigger value="equal" className={'data-[state=active]:bg-indigo-50 data-[state=active]:border data-[state=active]:border-indigo-300 data-[state=active]:text-indigo-700'}>Equal</TabsTrigger>
+                            <TabsTrigger value="percentage" className={'data-[state=active]:bg-indigo-50 data-[state=active]:border data-[state=active]:border-indigo-300 data-[state=active]:text-indigo-700'}>Percentage</TabsTrigger>
+                            <TabsTrigger value="exact" className={'data-[state=active]:bg-indigo-50 data-[state=active]:border data-[state=active]:border-indigo-300 data-[state=active]:text-indigo-700'}>Exact Amounts</TabsTrigger>
                         </TabsList>
                         <TabsContent value="equal" className="pt-4">
                             <p className="text-sm text-muted-foreground">

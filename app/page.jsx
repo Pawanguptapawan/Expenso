@@ -145,12 +145,13 @@ export default function Home() {
               <Card key={name} className="flex flex-col items-center space-y-4 p-6 text-center shadow-stone-950 shadow-xl bg-gray-500 ">
                 <CardContent className="space-y-4 p-6">
                   <p className="text-white text-xl">{quote}</p>
-                  <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-4">
+
                     <Avatar className='h-12 w-12'>
-                      <AvatarImage src={image} alt={name} />
+                      <AvatarImage src={image} alt={name}  />
                       <AvatarFallback className='font-semibold '>{name.charAt(0)} </AvatarFallback>
                     </Avatar>
-                    <div className='text-left'>
+                    <div className='text-bottom'>
                       <div className=' font-medium text-green-500 text-xl '>
                         {name} {emozi}
                         <div className=" text-orange-300 m-1">
@@ -179,7 +180,7 @@ export default function Home() {
               className="animated-gradient text-white px-6 py-3 rounded-md shadow-stone-900 shadow-xl"
             >
               <Link href="/dashboard" className="flex items-center">
-                Get Started
+                Let's Go Buddy!
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
