@@ -13,7 +13,7 @@ import { Toaster } from "sonner";
 const inter = Inter({ subsets: ["latin"] });
 // Defines the page title and description for SEO and browser display:
 export const metadata = {
-  title: "Splitr",
+  title: "Expenso",
   description: "The smartest way to split expenses with friends",
 };
 

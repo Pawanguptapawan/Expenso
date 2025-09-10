@@ -10,13 +10,13 @@ export const createExpense = mutation({
     category: v.optional(v.string()),
     date: v.number(), // timestamp
     paidByUserId: v.id("users"),
-    splittype: v.string(), // "equal", "percentage", "exact"
+    splitType: v.string(), // "equal", "percentage", "exact"
     splits: v.array(
-        v.object({
-          userId: v.id("users"),
-          amount: v.number(),
-          paid: v.boolean(),
-        })
+      v.object({
+        userId: v.id("users"),
+        amount: v.number(),
+        paid: v.boolean(),
+      })
     ),
     groupId: v.optional(v.id("groups")),
   },
@@ -32,7 +32,7 @@ export const createExpense = mutation({
       }
 
       const isMember = group.members.some(
-          (member) => member.userId === user._id
+        (member) => member.userId === user._id
       );
       if (!isMember) {
         throw new Error("You are not a member of this group");
@@ -41,8 +41,8 @@ export const createExpense = mutation({
 
     // Verify that splits add up to the total amount (with small tolerance for floating point issues)
     const totalSplitAmount = args.splits.reduce(
-        (sum, split) => sum + split.amount,
-        0
+      (sum, split) => sum + split.amount,
+      0
     );
     const tolerance = 0.01; // Allow for small rounding errors
     if (Math.abs(totalSplitAmount - args.amount) > tolerance) {
@@ -56,7 +56,7 @@ export const createExpense = mutation({
       category: args.category || "Other",
       date: args.date,
       paidByUserId: args.paidByUserId,
-      splittype: args.splittype,
+      splitType: args.splitType,
       splits: args.splits,
       groupId: args.groupId,
       createdBy: user._id,
@@ -66,30 +66,28 @@ export const createExpense = mutation({
   },
 });
 
-// ----------- Expenses Page -----------
 
-// Get expenses between current user and a specific person
 export const getExpensesBetweenUsers = query({
-  args: { userId: v.id("users") },
-  handler: async (ctx, { userId }) => {
+  args: { userId: v.id("users"),groupId:optional(v.id("groups")) },
+  handler: async (ctx, { userId,groupId }) => {
     const me = await ctx.runQuery(internal.users.getCurrentUser);
     if (me._id === userId) throw new Error("Cannot query yourself");
 
     /* ───── 1. One-on-one expenses where either user is the payer ───── */
     // Use the compound index (`paidByUserId`,`groupId`) with groupId = undefined
     const myPaid = await ctx.db
-        .query("expenses")
-        .withIndex("by_user_and_group", (q) =>
-            q.eq("paidByUserId", me._id).eq("groupId", undefined)
-        )
-        .collect();
+      .query("expenses")
+      .withIndex("by_user_and_group", (q) =>
+        q.eq("paidByUserId", me._id).eq("groupId", groupId)
+      )
+      .collect();
 
     const theirPaid = await ctx.db
-        .query("expenses")
-        .withIndex("by_user_and_group", (q) =>
-            q.eq("paidByUserId", userId).eq("groupId", undefined)
-        )
-        .collect();
+      .query("expenses")
+      .withIndex("by_user_and_group", (q) =>
+        q.eq("paidByUserId", userId).eq("groupId", groupId)
+      )
+      .collect();
 
     // Merge → candidate set is now just the rows either of us paid for
     const candidateExpenses = [...myPaid, ...theirPaid];
@@ -110,23 +108,23 @@ export const getExpensesBetweenUsers = query({
 
     /* ───── 3. Settlements between the two of us (groupId = undefined) ─ */
     const settlements = await ctx.db
-        .query("settlements")
-        .filter((q) =>
+      .query("settlements")
+      .filter((q) =>
+        q.and(
+          q.eq(q.field("groupId"), groupId),
+          q.or(
             q.and(
-                q.eq(q.field("groupId"), undefined),
-                q.or(
-                    q.and(
-                        q.eq(q.field("paidByUserId"), me._id),
-                        q.eq(q.field("receivedByUserId"), userId)
-                    ),
-                    q.and(
-                        q.eq(q.field("paidByUserId"), userId),
-                        q.eq(q.field("receivedByUserId"), me._id)
-                    )
-                )
+              q.eq(q.field("paidByUserId"), me._id),
+              q.eq(q.field("receivedByUserId"), userId)
+            ),
+            q.and(
+              q.eq(q.field("paidByUserId"), userId),
+              q.eq(q.field("receivedByUserId"), me._id)
             )
+          )
         )
-        .collect();
+      )
+      .collect();
 
     settlements.sort((a, b) => b.date - a.date);
 
@@ -164,7 +162,10 @@ export const getExpensesBetweenUsers = query({
       },
       balance,
     };
+    
   },
+  
+  
 });
 
 // Delete an expense
@@ -194,15 +195,15 @@ export const deleteExpense = mutation({
     const allSettlements = await ctx.db.query("settlements").collect();
 
     const relatedSettlements = allSettlements.filter(
-        (settlement) =>
-            settlement.relatedExpenseIds !== undefined &&
-            settlement.relatedExpenseIds.includes(args.expenseId)
+      (settlement) =>
+        settlement.relatedExpenseIds !== undefined &&
+        settlement.relatedExpenseIds.includes(args.expenseId)
     );
 
     for (const settlement of relatedSettlements) {
       // Remove this expense ID from the relatedExpenseIds array
       const updatedRelatedExpenseIds = settlement.relatedExpenseIds.filter(
-          (id) => id !== args.expenseId
+        (id) => id !== args.expenseId
       );
 
       if (updatedRelatedExpenseIds.length === 0) {
@@ -222,4 +223,3 @@ export const deleteExpense = mutation({
     return { success: true };
   },
 });
-

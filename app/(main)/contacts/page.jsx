@@ -9,7 +9,7 @@ import { Button } from "../../../components/ui/button" ;
 import { Card, CardContent } from "../../../components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "../../../components/ui/avatar";
 import { Plus, Users, User } from "lucide-react";
-import CreateGroupModal from "./_components/create-group-modal";
+import {CreateGroupModal} from "./_components/create-group-modal";
 
 
 const ContactPage = () => {
@@ -104,7 +104,7 @@ if(createGroupParam==='true'){
           ) : (
             <div className="flex flex-col gap-4 mx-3">
               {groups.map((group) => (
-                <Link key={group.id} href={`/person/${group.id}`}>
+                <Link key={group.id} href={`/groups/${group.id}`}>
                   <Card className="  text-black   transition-colors cursor-pointer mb-6 flex flex-col mx-3 shadow-2xl shadow-stone-950 shadow-stonw-900">
                     <CardContent className="py-4">
                       <div className="flex items-center justify-between">

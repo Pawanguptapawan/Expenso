@@ -1,3 +1,5 @@
+
+
 // convex/seed.js
 import { mutation } from "./_generated/server";
 
@@ -11,7 +13,7 @@ export const seedDatabase = mutation({
     // Check if database already has data to avoid duplicate seeding
     const existingExpenses = await ctx.db.query("expenses").collect();
     if (existingExpenses.length > 0) {
-      console.log("Database already has expenses. Skipping seed.");
+      // console.log("Database already has expenses. Skipping seed.");
       return {
         skipped: true,
         existingExpenses: existingExpenses.length,
@@ -22,9 +24,9 @@ export const seedDatabase = mutation({
     const users = await ctx.db.query("users").collect();
 
     if (users.length < 3) {
-      console.log(
-        "Not enough users in the database. Please ensure you have at least 3 users."
-      );
+      // console.log(
+      //     "Not enough users in the database. Please ensure you have at least 3 users."
+      // );
       return {
         skipped: true,
         reason: "Not enough users",
@@ -42,11 +44,11 @@ export const seedDatabase = mutation({
 
     // Step 5: Create settlements
     const settlements = await createSettlements(
-      ctx,
-      users,
-      groups,
-      oneOnOneExpenses,
-      groupExpenses
+        ctx,
+        users,
+        groups,
+        oneOnOneExpenses,
+        groupExpenses
     );
 
     return {
@@ -67,9 +69,9 @@ async function createGroups(ctx, users) {
   const now = Date.now();
 
   // Using the users from your database
-  const user1 = users[0]; 
-  const user2 = users[1]; 
-  const user3 = users[2]; 
+  const user1 = users[0];
+  const user2 = users[1];
+  const user3 = users[2];
 
   const groupDatas = [
     {
@@ -111,10 +113,10 @@ async function createGroups(ctx, users) {
 
   // Fetch all groups with their IDs
   return await Promise.all(
-    groupIds.map(async (id) => {
-      const group = await ctx.db.get(id);
-      return { ...group, _id: id };
-    })
+      groupIds.map(async (id) => {
+        const group = await ctx.db.get(id);
+        return { ...group, _id: id };
+      })
   );
 }
 
@@ -137,7 +139,7 @@ async function createOneOnOneExpenses(ctx, users) {
       category: "foodDrink", // Using ID from expense-categories.js
       date: twoWeeksAgo,
       paidByUserId: user1._id,
-      splittype: "equal",
+      splitType: "equal",
       splits: [
         { userId: user1._id, amount: 625.0, paid: true },
         { userId: user2._id, amount: 625.0, paid: false },
@@ -150,7 +152,7 @@ async function createOneOnOneExpenses(ctx, users) {
       category: "transportation",
       date: oneWeekAgo,
       paidByUserId: user2._id,
-      splittype: "equal",
+      splitType: "equal",
       splits: [
         { userId: user1._id, amount: 225.0, paid: false },
         { userId: user2._id, amount: 225.0, paid: true },
@@ -163,7 +165,7 @@ async function createOneOnOneExpenses(ctx, users) {
       category: "entertainment",
       date: oneWeekAgo + 2 * 24 * 60 * 60 * 1000,
       paidByUserId: user3._id,
-      splittype: "equal",
+      splitType: "equal",
       splits: [
         { userId: user2._id, amount: 250.0, paid: false },
         { userId: user3._id, amount: 250.0, paid: true },
@@ -176,7 +178,7 @@ async function createOneOnOneExpenses(ctx, users) {
       category: "groceries",
       date: oneMonthAgo,
       paidByUserId: user1._id,
-      splittype: "percentage",
+      splitType: "percentage",
       splits: [
         { userId: user1._id, amount: 1312.85, paid: true }, // 70%
         { userId: user3._id, amount: 562.65, paid: false }, // 30%
@@ -189,7 +191,7 @@ async function createOneOnOneExpenses(ctx, users) {
       category: "utilities",
       date: now - 3 * 24 * 60 * 60 * 1000,
       paidByUserId: user2._id,
-      splittype: "equal",
+      splitType: "equal",
       splits: [
         { userId: user2._id, amount: 600.0, paid: true },
         { userId: user3._id, amount: 600.0, paid: false },
@@ -206,10 +208,10 @@ async function createOneOnOneExpenses(ctx, users) {
 
   // Fetch all expenses with their IDs
   return await Promise.all(
-    expenseIds.map(async (id) => {
-      const expense = await ctx.db.get(id);
-      return { ...expense, _id: id };
-    })
+      expenseIds.map(async (id) => {
+        const expense = await ctx.db.get(id);
+        return { ...expense, _id: id };
+      })
   );
 }
 
@@ -232,7 +234,7 @@ async function createGroupExpenses(ctx, users, groups) {
       category: "housing",
       date: twoWeeksAgo,
       paidByUserId: user1._id,
-      splittype: "equal",
+      splitType: "equal",
       splits: [
         { userId: user1._id, amount: 3166.67, paid: true },
         { userId: user2._id, amount: 3166.67, paid: false },
@@ -247,7 +249,7 @@ async function createGroupExpenses(ctx, users, groups) {
       category: "groceries",
       date: twoWeeksAgo + 1 * 24 * 60 * 60 * 1000,
       paidByUserId: user2._id,
-      splittype: "equal",
+      splitType: "equal",
       splits: [
         { userId: user1._id, amount: 816.92, paid: false },
         { userId: user2._id, amount: 816.92, paid: true },
@@ -262,7 +264,7 @@ async function createGroupExpenses(ctx, users, groups) {
       category: "entertainment",
       date: twoWeeksAgo + 2 * 24 * 60 * 60 * 1000,
       paidByUserId: user3._id,
-      splittype: "equal",
+      splitType: "equal",
       splits: [
         { userId: user1._id, amount: 1500.0, paid: false },
         { userId: user2._id, amount: 1500.0, paid: false },
@@ -281,7 +283,7 @@ async function createGroupExpenses(ctx, users, groups) {
       category: "coffee",
       date: oneWeekAgo,
       paidByUserId: user2._id,
-      splittype: "equal",
+      splitType: "equal",
       splits: [
         { userId: user2._id, amount: 425.0, paid: true },
         { userId: user3._id, amount: 425.0, paid: false },
@@ -295,7 +297,7 @@ async function createGroupExpenses(ctx, users, groups) {
       category: "shopping",
       date: oneWeekAgo + 2 * 24 * 60 * 60 * 1000,
       paidByUserId: user3._id,
-      splittype: "equal",
+      splitType: "equal",
       splits: [
         { userId: user2._id, amount: 625.2, paid: false },
         { userId: user3._id, amount: 625.2, paid: true },
@@ -313,7 +315,7 @@ async function createGroupExpenses(ctx, users, groups) {
       category: "technology",
       date: now - 5 * 24 * 60 * 60 * 1000,
       paidByUserId: user3._id,
-      splittype: "equal",
+      splitType: "equal",
       splits: [
         { userId: user1._id, amount: 400.0, paid: false },
         { userId: user2._id, amount: 400.0, paid: false },
@@ -328,7 +330,7 @@ async function createGroupExpenses(ctx, users, groups) {
       category: "bills",
       date: now - 4 * 24 * 60 * 60 * 1000,
       paidByUserId: user1._id,
-      splittype: "equal",
+      splitType: "equal",
       splits: [
         { userId: user1._id, amount: 1200.0, paid: true },
         { userId: user2._id, amount: 1200.0, paid: false },
@@ -343,7 +345,7 @@ async function createGroupExpenses(ctx, users, groups) {
       category: "foodDrink",
       date: now - 2 * 24 * 60 * 60 * 1000,
       paidByUserId: user2._id,
-      splittype: "percentage",
+      splitType: "percentage",
       splits: [
         { userId: user1._id, amount: 1600.2, paid: false }, // 33.33%
         { userId: user2._id, amount: 1600.2, paid: true }, // 33.33%
@@ -369,20 +371,20 @@ async function createGroupExpenses(ctx, users, groups) {
 
   // Fetch all group expenses with their IDs
   return await Promise.all(
-    expenseIds.map(async (id) => {
-      const expense = await ctx.db.get(id);
-      return { ...expense, _id: id };
-    })
+      expenseIds.map(async (id) => {
+        const expense = await ctx.db.get(id);
+        return { ...expense, _id: id };
+      })
   );
 }
 
 // Helper to create settlements
 async function createSettlements(
-  ctx,
-  users,
-  groups,
-  oneOnOneExpenses,
-  groupExpenses
+    ctx,
+    users,
+    groups,
+    oneOnOneExpenses,
+    groupExpenses
 ) {
   const now = Date.now();
   const threeDaysAgo = now - 3 * 24 * 60 * 60 * 1000;
@@ -395,16 +397,16 @@ async function createSettlements(
 
   // Find a one-on-one expense to settle
   const cabExpense = oneOnOneExpenses.find(
-    (expense) => expense.description === "Cab ride to airport"
+      (expense) => expense.description === "Cab ride to airport"
   );
 
   // Find some group expenses to settle
   const hotelExpense = groupExpenses.find(
-    (expense) => expense.description === "Hotel reservation"
+      (expense) => expense.description === "Hotel reservation"
   );
 
   const coffeeExpense = groupExpenses.find(
-    (expense) => expense.description === "Coffee and snacks"
+      (expense) => expense.description === "Coffee and snacks"
   );
 
   const settlementDatas = [
@@ -450,9 +452,9 @@ async function createSettlements(
 
   // Fetch all settlements with their IDs
   return await Promise.all(
-    settlementIds.map(async (id) => {
-      const settlement = await ctx.db.get(id);
-      return { ...settlement, _id: id };
-    })
+      settlementIds.map(async (id) => {
+        const settlement = await ctx.db.get(id);
+        return { ...settlement, _id: id };
+      })
   );
 }

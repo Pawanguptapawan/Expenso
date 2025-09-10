@@ -20,7 +20,7 @@ import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from "../../../../../@/components/ui/popover";
+} from "../../../../../components/ui/popover";
 
 export function ParticipantSelector({ participants, onParticipantsChange }) {
     const { data: currentUser } = useConvexQuery(api.users.getCurrentUser);

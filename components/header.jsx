@@ -20,15 +20,17 @@ export default function Header() {
   }, []);
   return (
     <header className="fixed top-0 w-full border-b bg-white/95 backdrop-blur-sm z-50 supports-[backdrop-filter]:bg-white/60">
-      <nav className="container mx-auto px-4 h-16 flex items-center justify-between bg-amber-50">
+      <nav className="container mx-auto px-4 h-20 flex items-center justify-between bg-white-50">
         <Link href="/" className="flex items-center gap-2">
-          <Image
-            src={"/logos/logo2.png"}
-            alt="Vehiql Logo"
-            width={200}
-            height={60}
-            className="h-11 w-auto object-contain"
-          />
+<Image
+  src="/logos/chat_gpt_logo.png"
+  alt="Vehiql Logo"
+  width={400}
+  height={120}
+  className="h-20 w-auto object-contain rounded-full"
+/>
+
+
         </Link>
 
         {mounted && path === "/" && (
@@ -99,11 +101,11 @@ export default function Header() {
 
           <Unauthenticated>
             <SignInButton>
-              <Button variant="ghost">Sign In</Button>
+              <Button variant="ghost" className={'text-3xl p-3 m-3 cursor-pointer border-2'}>Sign In</Button>
             </SignInButton>
 
             <SignUpButton>
-              <Button className="bg-green-600 hover:bg-green-700 border-none">
+              <Button className="bg-green-600 hover:bg-green-700 border-none cursor-pointer">
                 Get Started
               </Button>
             </SignUpButton>

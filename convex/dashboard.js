@@ -1,3 +1,6 @@
+
+
+
 import { query } from "./_generated/server";
 import { internal } from "./_generated/api";
 
@@ -9,10 +12,10 @@ export const getUserBalances = query({
 
     /* ───────────── 1‑to‑1 expenses (no groupId) ───────────── */
     const expenses = (await ctx.db.query("expenses").collect()).filter(
-      (e) =>
-        !e.groupId && // 1‑to‑1 only
-        (e.paidByUserId === user._id ||
-          e.splits.some((s) => s.userId === user._id))
+        (e) =>
+            !e.groupId && // 1‑to‑1 only
+            (e.paidByUserId === user._id ||
+                e.splits.some((s) => s.userId === user._id))
     );
 
     /* tallies */
@@ -33,26 +36,26 @@ export const getUserBalances = query({
       } else if (mySplit && !mySplit.paid) {
         youOwe += mySplit.amount;
         (balanceByUser[e.paidByUserId] ??= { owed: 0, owing: 0 }).owing +=
-          mySplit.amount;
+            mySplit.amount;
       }
     }
 
     /* ───────────── 1‑to‑1 settlements (no groupId) ───────────── */
     const settlements = (await ctx.db.query("settlements").collect()).filter(
-      (s) =>
-        !s.groupId &&
-        (s.paidByUserId === user._id || s.receivedByUserId === user._id)
+        (s) =>
+            !s.groupId &&
+            (s.paidByUserId === user._id || s.receivedByUserId === user._id)
     );
 
     for (const s of settlements) {
       if (s.paidByUserId === user._id) {
         youOwe -= s.amount;
         (balanceByUser[s.receivedByUserId] ??= { owed: 0, owing: 0 }).owing -=
-          s.amount;
+            s.amount;
       } else {
         youAreOwed -= s.amount;
         (balanceByUser[s.paidByUserId] ??= { owed: 0, owing: 0 }).owed -=
-          s.amount;
+            s.amount;
       }
     }
 
@@ -95,15 +98,15 @@ export const getTotalSpent = query({
 
     // Get all expenses for the current year
     const expenses = await ctx.db
-      .query("expenses")
-      .withIndex("by_date", (q) => q.gte("date", startOfYear))
-      .collect();
+        .query("expenses")
+        .withIndex("by_date", (q) => q.gte("date", startOfYear))
+        .collect();
 
     // Filter for expenses where user is involved
     const userExpenses = expenses.filter(
-      (expense) =>
-        expense.paidByUserId === user._id ||
-        expense.splits.some((split) => split.userId === user._id)
+        (expense) =>
+            expense.paidByUserId === user._id ||
+            expense.splits.some((split) => split.userId === user._id)
     );
 
     // Calculate total spent (personal share only)
@@ -111,7 +114,7 @@ export const getTotalSpent = query({
 
     userExpenses.forEach((expense) => {
       const userSplit = expense.splits.find(
-        (split) => split.userId === user._id
+          (split) => split.userId === user._id
       );
       if (userSplit) {
         totalSpent += userSplit.amount;
@@ -133,15 +136,15 @@ export const getMonthlySpending = query({
 
     // Get all expenses for current year
     const allExpenses = await ctx.db
-      .query("expenses")
-      .withIndex("by_date", (q) => q.gte("date", startOfYear))
-      .collect();
+        .query("expenses")
+        .withIndex("by_date", (q) => q.gte("date", startOfYear))
+        .collect();
 
     // Filter for expenses where user is involved
     const userExpenses = allExpenses.filter(
-      (expense) =>
-        expense.paidByUserId === user._id ||
-        expense.splits.some((split) => split.userId === user._id)
+        (expense) =>
+            expense.paidByUserId === user._id ||
+            expense.splits.some((split) => split.userId === user._id)
     );
 
     // Group expenses by month
@@ -157,18 +160,18 @@ export const getMonthlySpending = query({
     userExpenses.forEach((expense) => {
       const date = new Date(expense.date);
       const monthStart = new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        1
+          date.getFullYear(),
+          date.getMonth(),
+          1
       ).getTime();
 
       // Get user's share of this expense
       const userSplit = expense.splits.find(
-        (split) => split.userId === user._id
+          (split) => split.userId === user._id
       );
       if (userSplit) {
         monthlyTotals[monthStart] =
-          (monthlyTotals[monthStart] || 0) + userSplit.amount;
+            (monthlyTotals[monthStart] || 0) + userSplit.amount;
       }
     });
 
@@ -195,69 +198,69 @@ export const getUserGroups = query({
 
     // Filter for groups where the user is a member
     const groups = allGroups.filter((group) =>
-      group.members.some((member) => member.userId === user._id)
+        group.members.some((member) => member.userId === user._id)
     );
 
     // Calculate balances for each group
     const enhancedGroups = await Promise.all(
-      groups.map(async (group) => {
-        // Get all expenses for this group
-        const expenses = await ctx.db
-          .query("expenses")
-          .withIndex("by_group", (q) => q.eq("groupId", group._id))
-          .collect();
+        groups.map(async (group) => {
+          // Get all expenses for this group
+          const expenses = await ctx.db
+              .query("expenses")
+              .withIndex("by_group", (q) => q.eq("groupId", group._id))
+              .collect();
 
-        let balance = 0;
+          let balance = 0;
 
-        expenses.forEach((expense) => {
-          if (expense.paidByUserId === user._id) {
-            // User paid for others
-            expense.splits.forEach((split) => {
-              if (split.userId !== user._id && !split.paid) {
-                balance += split.amount;
+          expenses.forEach((expense) => {
+            if (expense.paidByUserId === user._id) {
+              // User paid for others
+              expense.splits.forEach((split) => {
+                if (split.userId !== user._id && !split.paid) {
+                  balance += split.amount;
+                }
+              });
+            } else {
+              // User owes someone else
+              const userSplit = expense.splits.find(
+                  (split) => split.userId === user._id
+              );
+              if (userSplit && !userSplit.paid) {
+                balance -= userSplit.amount;
               }
-            });
-          } else {
-            // User owes someone else
-            const userSplit = expense.splits.find(
-              (split) => split.userId === user._id
-            );
-            if (userSplit && !userSplit.paid) {
-              balance -= userSplit.amount;
             }
-          }
-        });
+          });
 
-        // Apply settlements
-        const settlements = await ctx.db
-          .query("settlements")
-          .filter((q) =>
-            q.and(
-              q.eq(q.field("groupId"), group._id),
-              q.or(
-                q.eq(q.field("paidByUserId"), user._id),
-                q.eq(q.field("receivedByUserId"), user._id)
+          // Apply settlements
+          const settlements = await ctx.db
+              .query("settlements")
+              .filter((q) =>
+                  q.and(
+                      q.eq(q.field("groupId"), group._id),
+                      q.or(
+                          q.eq(q.field("paidByUserId"), user._id),
+                          q.eq(q.field("receivedByUserId"), user._id)
+                      )
+                  )
               )
-            )
-          )
-          .collect();
+              .collect();
 
-        settlements.forEach((settlement) => {
-          if (settlement.paidByUserId === user._id) {
-            // User paid someone
-            balance += settlement.amount;
-          } else {
-            // Someone paid the user
-            balance -= settlement.amount;
-          }
-        });
+          settlements.forEach((settlement) => {
+            if (settlement.paidByUserId === user._id) {
+              // User paid someone
+              balance += settlement.amount;
+            } else {
+              // Someone paid the user
+              balance -= settlement.amount;
+            }
+          });
 
-        return {
-          ...group,
-          id: group._id,
-          balance,
-        };
-      })
+          return {
+            ...group,
+            id: group._id,
+            balance,
+          };
+        })
     );
 
     return enhancedGroups;

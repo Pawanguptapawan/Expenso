@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { api } from "../../../../../convex/_generated/api";
-import { useConvexMutations, useConvexQuery } from "../../../../../hooks/use-convex-query";
+import { useConvexMutation, useConvexQuery } from "../../../../../hooks/use-convex-query";
 import { Input } from "../../../../../components/ui/input";
 import { Button } from "../../../../../components/ui/button";
 import { Label } from "../../../../../components/ui/label";
@@ -21,10 +21,11 @@ import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from "../../../../../@/components/ui/popover";
+} from "../../../../../components/ui/popover";
 import { cn } from "../../../../../lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { getAllCategories } from "../../../../../lib/expense-category";
+;
 
 // Form schema validation
 const expenseSchema = z.object({
@@ -38,7 +39,7 @@ const expenseSchema = z.object({
     category: z.string().optional(),
     date: z.date(),
     paidByUserId: z.string().min(1, "Payer is required"),
-    splittype: z.enum(["equal", "percentage", "exact"]),
+    splitType: z.enum(["equal", "percentage", "exact"]),
     groupId: z.string().optional(),
 });
 
@@ -51,7 +52,7 @@ export function ExpenseForm({ type = "individual", onSuccess }) {
     // Mutations and queries
     const { data: currentUser } = useConvexQuery(api.users.getCurrentUser);
 
-    const createExpense = useConvexMutations(api.expenses.createExpense);
+    const createExpense = useConvexMutation(api.expenses.createExpense);
     const categories = getAllCategories();
 
     // Set up form with validation
@@ -70,7 +71,7 @@ export function ExpenseForm({ type = "individual", onSuccess }) {
             category: "",
             date: new Date(),
             paidByUserId: currentUser?._id || "",
-            splittype: "equal",
+            splitType: "equal",
             groupId: undefined,
         },
     });
@@ -130,7 +131,7 @@ export function ExpenseForm({ type = "individual", onSuccess }) {
                 category: data.category || "Other",
                 date: data.date.getTime(), // Convert to timestamp
                 paidByUserId: data.paidByUserId,
-                splittype: data.splittype,
+                splitType: data.splitType,
                 splits: formattedSplits,
                 groupId,
             });
@@ -304,7 +305,7 @@ export function ExpenseForm({ type = "individual", onSuccess }) {
                     <Label>Split type</Label>
                     <Tabs
                         defaultValue="equal"
-                        onValueChange={(value) => setValue("splittype", value)}
+                        onValueChange={(value) => setValue("splitType", value)}
                     >
                         <TabsList className="grid w-full grid-cols-3">
                             <TabsTrigger value="equal">Equal</TabsTrigger>
@@ -362,5 +363,3 @@ export function ExpenseForm({ type = "individual", onSuccess }) {
         </form>
     );
 }
-
-export default  ExpenseForm;

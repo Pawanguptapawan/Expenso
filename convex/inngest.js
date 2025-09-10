@@ -1,3 +1,5 @@
+
+
 import { query } from "./_generated/server";
 import { v } from "convex/values";
 
@@ -10,15 +12,15 @@ export const getUsersWithOutstandingDebts = query({
 
     // Load every 1‑to‑1 expense once (groupId === undefined)
     const expenses = await ctx.db
-        .query("expenses")
-        .filter((q) => q.eq(q.field("groupId"), undefined))
-        .collect();
+      .query("expenses")
+      .filter((q) => q.eq(q.field("groupId"), undefined))
+      .collect();
 
     // Load every 1‑to‑1 settlement once (groupId === undefined)
     const settlements = await ctx.db
-        .query("settlements")
-        .filter((q) => q.eq(q.field("groupId"), undefined))
-        .collect();
+      .query("settlements")
+      .filter((q) => q.eq(q.field("groupId"), undefined))
+      .collect();
 
     /* small cache so we don’t hit the DB for every name */
     const userCache = new Map();
@@ -38,7 +40,7 @@ export const getUsersWithOutstandingDebts = query({
         // Case A: somebody else paid, and user appears in splits
         if (exp.paidByUserId !== user._id) {
           const split = exp.splits.find(
-              (s) => s.userId === user._id && !s.paid
+            (s) => s.userId === user._id && !s.paid
           );
           if (!split) continue;
 
@@ -102,7 +104,7 @@ export const getUsersWithOutstandingDebts = query({
         }
       }
 
-      console.log(user.name, debts);
+      // console.log(user.name, debts);
 
       if (debts.length) {
         result.push({
@@ -133,20 +135,20 @@ export const getUsersWithExpenses = query({
     for (const user of users) {
       // First, check expenses where this user is the payer
       const paidExpenses = await ctx.db
-          .query("expenses")
-          .withIndex("by_date", (q) => q.gte("date", monthStart))
-          .filter((q) => q.eq(q.field("paidByUserId"), user._id))
-          .collect();
+        .query("expenses")
+        .withIndex("by_date", (q) => q.gte("date", monthStart))
+        .filter((q) => q.eq(q.field("paidByUserId"), user._id))
+        .collect();
 
       // Then, check all expenses to find ones where user is in splits
       // We need to do this separately because we can't filter directly on array contents
       const allRecentExpenses = await ctx.db
-          .query("expenses")
-          .withIndex("by_date", (q) => q.gte("date", monthStart))
-          .collect();
+        .query("expenses")
+        .withIndex("by_date", (q) => q.gte("date", monthStart))
+        .collect();
 
       const splitExpenses = allRecentExpenses.filter((expense) =>
-          expense.splits.some((split) => split.userId === user._id)
+        expense.splits.some((split) => split.userId === user._id)
       );
 
       // Combine both sets of expenses
@@ -177,15 +179,15 @@ export const getUserMonthlyExpenses = query({
 
     // Get all expenses involving this user from the past month
     const allExpenses = await ctx.db
-        .query("expenses")
-        .withIndex("by_date", (q) => q.gte("date", monthStart))
-        .collect();
+      .query("expenses")
+      .withIndex("by_date", (q) => q.gte("date", monthStart))
+      .collect();
 
     // Filter for expenses where this user is involved
     const userExpenses = allExpenses.filter((expense) => {
       const isInvolved =
-          expense.paidByUserId === args.userId ||
-          expense.splits.some((split) => split.userId === args.userId);
+        expense.paidByUserId === args.userId ||
+        expense.splits.some((split) => split.userId === args.userId);
       return isInvolved;
     });
 
@@ -193,7 +195,7 @@ export const getUserMonthlyExpenses = query({
     return userExpenses.map((expense) => {
       // Get the user's share of this expense
       const userSplit = expense.splits.find(
-          (split) => split.userId === args.userId
+        (split) => split.userId === args.userId
       );
 
       return {
