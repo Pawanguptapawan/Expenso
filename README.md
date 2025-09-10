@@ -138,8 +138,20 @@ GEMINI_API_KEY=AIzaSyDdp1EutrBeYUvLASz9rJT2sqsYF6UvKW0
 
 
 
+In Convex, ctx is the context object passed as the first argument to every server function—queries, mutations, and actions. It provides access to services and utilities needed within these functions, such as database access, authentication, file storage, and more.
+
+The exact shape of ctx depends on the function type:
+
+Query functions: ctx includes db (for reading from the database), auth (for authentication), and storage (for file storage) [QueryCtx].
+Mutation functions: ctx includes db (for reading and writing), auth, storage, and scheduler (for scheduling future tasks) [MutationCtx].
+Action functions: ctx includes runQuery, runMutation, runAction (to call other functions), auth, scheduler, storage, and vectorSearch [ActionCtx].
+
+//seed the data: 
+
+
 ***Backend***
-1.convex/user/contact/
+1.convex/user/groups/expenses/settlement/contact/email/inngest/dashboard
+
 2.middlewares
 
 

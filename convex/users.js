@@ -89,7 +89,7 @@ export const store = mutation({
     }
 
     // Check if we've already stored this identity before.
-    // Note: If you don't want to define an index right away, you can use
+    // Note: If we don't want to define an index right away, you can use
     // ctx.db.query("users")
     //  .filter(q => q.eq(q.field("tokenIdentifier"), identity.tokenIdentifier))
     //  .unique();
