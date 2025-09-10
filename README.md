@@ -100,26 +100,7 @@ npm i next-spinners --legacy-peer-deps
 
 # Deployment used by `npx convex dev`
 
-#CONVEX_DEPLOYMENT=dev:different-cow-749 # team: pawan-gupta, project: Expenso-16811
-#NEXT_PUBLIC_CONVEX_URL=https://different-cow-749.convex.cloud
 
-CONVEX_DEPLOY_KEY=prod:sleek-manatee-42|eyJ2MiI6IjcxMzc1YmE3NmMyMzQ1YThiNTE0MWIxZTdjY2M0ZTRjIn0=
-CONVEX_DEPLOYMENT=prod:sleek-manatee-42
-NEXT_PUBLIC_CONVEX_URL=https://sleek-manatee-42.convex.cloud
-
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_Y3J1Y2lhbC1zbmFrZS03NS5jbGVyay5hY2NvdW50cy5kZXYk
-CLERK_SECRET_KEY=sk_test_qCQGpI2cJT32XbCtIDxgnCSNrPhArGnvSUIakh3E1f
-
-NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
-
-NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-
-NEXT_PUBLIC_CLERK_FRONTEND_API_URL=https://verb-noun-00.clerk.accounts.dev
-
-CLERK_JWT_ISSUER_DOMAIN=https://crucial-snake-75.clerk.accounts.dev
-
-RESEND_API_KEY=re_FDnWhJCa_9NLNdP5vVuNw9dpUKxkmS32n
-GEMINI_API_KEY=AIzaSyDdp1EutrBeYUvLASz9rJT2sqsYF6UvKW0
 
 [//]: # (npx inngest-cli@latest dev)
 [//]: # (npx convex dev )
